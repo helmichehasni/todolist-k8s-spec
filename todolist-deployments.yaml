@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todolist-web-v1
+  labels:
+    kubernetes.azureauthority.in: deployments
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: todolist-web
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: todolist-lab
+        version: v1
+    spec:
+      containers:
+        - name: app
+          image: helmichehasni/todo-list-web:1.0
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todo-list-save-handler-v2
+  labels:
+    kubernetes.azureauthority.in: deployments
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: todo-list-save-handler
+      version: v2
+  template:
+    metadata:
+      labels:
+        app: todo-list-save-handler
+        version: v2
+    spec:
+      containers:
+        - name: app
+          image: helmichehasni/todo-list-save-handler:1.0
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todo-queue
+  labels:
+    kubernetes.azureauthority.in: deployments
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: todo-queue
+      version: v2
+  template:
+    metadata:
+      labels:
+        app: todo-queue
+        version: v2
+    spec:
+      containers:
+        - name: app
+          image: redis:6.2-alpine
