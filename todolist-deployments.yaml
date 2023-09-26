@@ -63,3 +63,54 @@ spec:
       containers:
         - name: app
           image: redis:6.2-alpine
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todo-db
+  labels:
+    kubernetes.azureauthority.in: deployments
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: todo-db
+      version: v2
+  template:
+    metadata:
+      labels:
+        app: todo-db
+        version: v2
+    spec:
+      containers:
+        - name: app
+          image: mcr.microsoft.com/azure-sql-edge
+          env:
+            - name: ACCEPT_EULA
+              value: Y
+            - name: MSSQL_PID
+              value: Developer
+            - name: MSSQL_SA_PASSWORD
+              value: AzureD3v!!!     
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todo-storage
+  labels:
+    kubernetes.azureauthority.in: deployments
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: todo-storage
+      version: v2
+  template:
+    metadata:
+      labels:
+        app: todo-storage
+        version: v2
+    spec:
+      containers:
+        - name: app
+          image: mcr.microsoft.com/azure-storage/azurite
