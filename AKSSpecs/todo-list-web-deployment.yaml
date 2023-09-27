@@ -39,10 +39,10 @@ spec:
               subPath: config.json
       restartPolicy: Always
       volumes:
-        - configMap:
-            items:
-              - key: config.json
-                path: config.json
-            name: appsettings
-          name: appsettings
+        - name: appsettings
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: todolist-keyvault
 status: {}
